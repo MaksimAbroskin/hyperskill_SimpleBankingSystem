@@ -42,37 +42,6 @@ public class Main {
                 case 2:
                     AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
                     accountHandler.loginAccount();
-//                    Card inCard = loginAccount();
-//                    if (inCard != null) {
-//                        inloop:
-//                        while (true) {
-//                            System.out.println("\n1. Balance\n" +
-//                                    "2. Log out\n" +
-//                                    "0. Exit");
-//
-//                            int cmd;
-//                            try {
-//                                cmd = scanner.nextInt();
-//                            } catch (Exception e) {
-//                                System.out.println("Incorrect command");
-//                                continue;
-//                            }
-//
-//                            switch (cmd) {
-//                                case 0:
-//                                    break outloop;
-//                                case 1:
-//                                    System.out.println("Balance: " + inCard.getBalance());
-//                                    break;
-//                                case 2:
-//                                    System.out.println("You have successfully logged out!");
-//                                    break inloop;
-//                            }
-//
-//                        }
-//                    } else {
-//                        break;
-//                    }
             }
         }
     }
