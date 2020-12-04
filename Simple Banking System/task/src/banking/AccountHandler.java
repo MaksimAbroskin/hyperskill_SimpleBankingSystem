@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountHandler {
-    ArrayList<Card> cards;
+    ArrayList<Card> cards; //4000000638755863
     Scanner scanner;
     Card handledCard;
 
@@ -13,8 +13,8 @@ public class AccountHandler {
         this.scanner = scanner;
     }
 
-    static Card createAccount(String bin) {
-        Card newCard = new Card(bin);
+    static Card createAccount() {
+        Card newCard = new Card();
         if (newCard.number.matches("\\d{16}")) {
             System.out.println("\nYour card has been created\n" +
                     "Your card number:\n" + newCard.getNumber());
@@ -29,7 +29,7 @@ public class AccountHandler {
         System.out.println("Enter your card number:");
         String userCardNumber = scanner.next();
         System.out.println("Enter your PIN:");
-        int userPin = scanner.nextInt();
+        String userPin = scanner.next();
 
         for (Card card: cards) {
             if (card.getNumber().equals(userCardNumber)) {

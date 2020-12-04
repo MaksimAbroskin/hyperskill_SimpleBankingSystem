@@ -3,7 +3,6 @@ package banking;
 import java.util.*;
 
 public class Main {
-    static final String BIN = "400000";
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<Card> cardsDatabase = new ArrayList<>();
 
@@ -31,7 +30,7 @@ public class Main {
                     System.out.println("Bye!");
                     break outloop;
                 case 1:
-                    Card newCard = createAccount(BIN);
+                    Card newCard = AccountHandler.createAccount();
                     if (newCard != null) {
                         cardsDatabase.add(newCard);
                     } else {
@@ -47,15 +46,11 @@ public class Main {
     }
 
     static Card createAccount(String bin) {
-        Card newCard = new Card(bin);
-        if (newCard.number.matches("\\d{16}")) {
-            System.out.println("\nYour card has been created\n" +
-                    "Your card number:\n" + newCard.getNumber());
-            System.out.println("Your card PIN:\n" + newCard.getPin());
-            return newCard;
-        } else {
-            return null;
-        }
+        Card newCard = new Card();
+        System.out.println("\nYour card has been created\n" +
+                "Your card number:\n" + newCard.getNumber());
+        System.out.println("Your card PIN:\n" + newCard.getPin());
+        return newCard;
     }
 
     static Card loginAccount() {

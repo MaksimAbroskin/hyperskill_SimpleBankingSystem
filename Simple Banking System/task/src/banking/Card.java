@@ -3,19 +3,13 @@ package banking;
 import java.util.Random;
 
 public class Card {
+    final String BIN = "400000";
     String number;
     String pin;
     Integer balance;
-    String bin; //Bank Identification Number
+//    String bin; //Bank Identification Number
 
-    public Card(String BIN) {
-        if (BIN.matches("\\d{6}")) {
-            this.bin = BIN;
-        } else {
-            System.out.println("Incorrect BIN! It must contain exactly six digits");
-            this.bin = null;
-            return;
-        }
+    public Card() {
         setNumber();
         setPin();
         setBalance(0);
@@ -24,8 +18,9 @@ public class Card {
     public void setNumber() {
         Random random = new Random();
         int accountId = random.nextInt(1_000_000_000); // Account Identifier
-        int checksum = generateChecksum(bin + accountId);
-        this.number = this.bin + String.format("%09d", accountId) + checksum;
+        String noChecksum = BIN + String.format("%09d", accountId);
+        int checksum = generateChecksum(noChecksum);
+        this.number = noChecksum + checksum;
     }
 
     public void setPin() {
@@ -49,7 +44,7 @@ public class Card {
         return balance;
     }
 
-    public int generateChecksum(String number) {
+    public static int generateChecksum(String number) {
         char[] chDigits = number.toCharArray();
         int[] digits = new int[chDigits.length];
         int sum = 0;
@@ -64,7 +59,7 @@ public class Card {
             }
             sum += digits[i];
         }
-        return 10 - sum % 10;
+        return (sum % 10 != 0) ? 10 - sum % 10 : 0;
     }
 
     @Override
