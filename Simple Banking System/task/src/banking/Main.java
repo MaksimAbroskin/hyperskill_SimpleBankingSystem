@@ -36,7 +36,8 @@ public class Main {
                     } else {
                         System.out.println("Couldn't create new account");
                     }
-                    System.out.println("cardsDatabase" + Arrays.toString(new ArrayList[]{cardsDatabase}));
+//                    System.out.println("cardsDatabase" + Arrays.toString(new ArrayList[]{cardsDatabase}));
+//                    System.out.println("cardsDatabase.size() = " + cardsDatabase.size());
                     break;
                 case 2:
                     AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
