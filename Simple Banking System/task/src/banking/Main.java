@@ -1,7 +1,5 @@
 package banking;
 
-import com.beust.jcommander.JCommander;
-
 import java.util.*;
 
 public class Main {
@@ -10,7 +8,8 @@ public class Main {
 
     public static void main(String[] args) {
         String fileName = CmdLineArgsParse.parseArgs(args);
-        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileName);
+        String fileNameTest = "db.s3db";
+        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileNameTest);
         sqlDatabaseHandler.createDatabase();
         outloop:
         while (true) {
@@ -45,8 +44,14 @@ public class Main {
                     }
                     break;
                 case 2:
-                    AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
-                    accountHandler.loginAccount();
+                    System.out.println("Enter your card number:");
+                    String number = scanner.next();
+                    System.out.println("Enter your PIN:");
+                    String pin = scanner.next();
+                    sqlDatabaseHandler.login(number, pin);
+                    // TODO while if logined
+//                    AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
+//                    accountHandler.loginAccount();
             }
         }
     }

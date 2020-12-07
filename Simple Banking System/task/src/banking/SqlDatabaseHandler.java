@@ -6,6 +6,7 @@ import java.sql.*;
 
 public class SqlDatabaseHandler {
     String fileName;
+    SQLiteDataSource dataSource;
     static final String QUERY_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS card(\n" +
             "id INTEGER,\n" +
             "number TEXT,\n" +
@@ -14,19 +15,18 @@ public class SqlDatabaseHandler {
             ");";
     static String QUERY_INSERT = "INSERT INTO card(id, number, pin) VALUES (?, ?, ?)";
     static String QUERY_SELECT = "SELECT * FROM card";
-    static String QUERY_LOGIN = "SELECT number, pin FROM card";
+    static String QUERY_LOGIN = "SELECT * FROM card WHERE (number = ?) AND (pin = ?)";
     static String QUERY_GET_BALANCE = "SELECT balance FROM card WHERE (number = ?) AND (pin = ?)";
 
     public SqlDatabaseHandler(String fileName) {
         this.fileName = fileName;
+        String url = "jdbc:sqlite:" + fileName;
+        this.dataSource = new SQLiteDataSource();
+        this.dataSource.setUrl(url);
+        this.dataSource.setEncoding("UTF-8");
     }
 
     public void createDatabase() {
-        String url = "jdbc:sqlite:" + fileName;
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(url);
-        dataSource.setEncoding("UTF-8");
-
         try (Connection con = dataSource.getConnection()) {
             try (Statement statement = con.createStatement()) {
                 statement.executeUpdate(QUERY_CREATE_TABLE);
@@ -39,10 +39,6 @@ public class SqlDatabaseHandler {
     }
 
     public void addNewCard(Card card) {
-        String url = "jdbc:sqlite:" + fileName;
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(url);
-
         try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = con.prepareStatement(QUERY_INSERT)) {
                 preparedStatement.setInt(1, card.getId());
@@ -57,11 +53,29 @@ public class SqlDatabaseHandler {
         }
     }
 
-    public void getCard(QueryType queryType) {
-        String url = "jdbc:sqlite:" + fileName;
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(url);
+    // TODO return Card
+    public void login(String number, String pin) {
+        try (Connection con = dataSource.getConnection()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(QUERY_LOGIN)) {
+                preparedStatement.setString(1, number);
+                preparedStatement.setString(2, pin);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    System.out.println("You have successfully logged in!");
 
+                } else {
+                    System.out.println("Wrong card number or PIN!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getCard() {
         try (Connection con = dataSource.getConnection()) {
             try (Statement statement = con.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(QUERY_SELECT);

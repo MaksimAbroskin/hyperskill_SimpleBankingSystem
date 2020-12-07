@@ -11,12 +11,15 @@ public class Card {
     Integer balance;
 
     public Card() {
+        // TODO algorithm of calculation id
         cnt++;
         this.id = cnt;
         setNumber();
         setPin();
         setBalance(0);
     }
+
+    //TODO constructor with all parameters
 
     public void setNumber() {
         Random random = new Random();
