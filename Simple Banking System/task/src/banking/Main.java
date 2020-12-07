@@ -25,6 +25,8 @@ public class Main {
                 break;
             }
 
+            
+
             switch (command) {
                 case 0:
                     System.out.println("Bye!");
