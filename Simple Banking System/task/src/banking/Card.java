@@ -4,12 +4,15 @@ import java.util.Random;
 
 public class Card {
     final String BIN = "400000";
+    static int cnt;
+    int id;
     String number;
     String pin;
     Integer balance;
-//    String bin; //Bank Identification Number
 
     public Card() {
+        cnt++;
+        this.id = cnt;
         setNumber();
         setPin();
         setBalance(0);
@@ -30,6 +33,10 @@ public class Card {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNumber() {
@@ -65,6 +72,7 @@ public class Card {
     @Override
     public String toString() {
         return "Card{" +
+                "id='" + id + '\'' +
                 "number='" + number + '\'' +
                 ", pin=" + pin +
                 ", balance=" + balance +

@@ -1,5 +1,7 @@
 package banking;
 
+import com.beust.jcommander.JCommander;
+
 import java.util.*;
 
 public class Main {
@@ -7,8 +9,12 @@ public class Main {
     static ArrayList<Card> cardsDatabase = new ArrayList<>();
 
     public static void main(String[] args) {
+        String fileName = CmdLineArgsParse.parseArgs(args);
+        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileName);
+        sqlDatabaseHandler.createDatabase();
         outloop:
         while (true) {
+//            System.out.println(cardsDatabase);
             System.out.println("\n1. Create an account\n" +
                     "2. Log into account\n" +
                     "0. Exit");
@@ -25,8 +31,6 @@ public class Main {
                 break;
             }
 
-            
-
             switch (command) {
                 case 0:
                     System.out.println("Bye!");
@@ -34,45 +38,16 @@ public class Main {
                 case 1:
                     Card newCard = AccountHandler.createAccount();
                     if (newCard != null) {
-                        cardsDatabase.add(newCard);
+                        sqlDatabaseHandler.addNewCard(newCard);
+//                        cardsDatabase.add(newCard);
                     } else {
                         System.out.println("Couldn't create new account");
                     }
-//                    System.out.println("cardsDatabase" + Arrays.toString(new ArrayList[]{cardsDatabase}));
-//                    System.out.println("cardsDatabase.size() = " + cardsDatabase.size());
                     break;
                 case 2:
                     AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
                     accountHandler.loginAccount();
             }
         }
-    }
-
-    static Card createAccount(String bin) {
-        Card newCard = new Card();
-        System.out.println("\nYour card has been created\n" +
-                "Your card number:\n" + newCard.getNumber());
-        System.out.println("Your card PIN:\n" + newCard.getPin());
-        return newCard;
-    }
-
-    static Card loginAccount() {
-        System.out.println("Enter your card number:");
-        String userCardNumber = scanner.next();
-        System.out.println("Enter your PIN:");
-        int userPin = scanner.nextInt();
-
-        for (Card card : cardsDatabase) {
-            if (card.getNumber().equals(userCardNumber)) {
-                if (card.getPin().equals(userPin)) {
-                    System.out.println("You have successfully logged in!");
-                    return card;
-                } else {
-                    break;
-                }
-            }
-        }
-        System.out.println("Wrong card number or PIN!");
-        return null;
     }
 }

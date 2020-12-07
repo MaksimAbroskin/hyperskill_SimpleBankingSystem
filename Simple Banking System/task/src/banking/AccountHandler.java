@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountHandler {
-    ArrayList<Card> cards; //4000000638755863
+    ArrayList<Card> cards;
     Scanner scanner;
     Card handledCard;
 

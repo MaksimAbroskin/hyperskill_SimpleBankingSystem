@@ -14,6 +14,8 @@ public class SqlDatabaseHandler {
             ");";
     static String QUERY_INSERT = "INSERT INTO card(id, number, pin) VALUES (?, ?, ?)";
     static String QUERY_SELECT = "SELECT * FROM card";
+    static String QUERY_LOGIN = "SELECT number, pin FROM card";
+    static String QUERY_GET_BALANCE = "SELECT balance FROM card WHERE (number = ?) AND (pin = ?)";
 
     public SqlDatabaseHandler(String fileName) {
         this.fileName = fileName;
@@ -36,16 +38,16 @@ public class SqlDatabaseHandler {
         }
     }
 
-    public void addNewCard() {
+    public void addNewCard(Card card) {
         String url = "jdbc:sqlite:" + fileName;
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
 
         try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = con.prepareStatement(QUERY_INSERT)) {
-                preparedStatement.setInt(1, 2);
-                preparedStatement.setString(2, "number2");
-                preparedStatement.setString(3, "pin2");
+                preparedStatement.setInt(1, card.getId());
+                preparedStatement.setString(2, card.getNumber());
+                preparedStatement.setString(3, card.getPin());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -55,7 +57,7 @@ public class SqlDatabaseHandler {
         }
     }
 
-    public void getCard() {
+    public void getCard(QueryType queryType) {
         String url = "jdbc:sqlite:" + fileName;
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
