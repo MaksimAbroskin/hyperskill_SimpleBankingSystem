@@ -7,12 +7,10 @@ public class Main {
 
     public static void main(String[] args) {
         String fileName = CmdLineArgsParse.parseArgs(args);
-        String fileNameTest = "db1.s3db";
-        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileNameTest);
+        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileName);
         sqlDatabaseHandler.createDatabase();
         outloop:
         while (true) {
-//            System.out.println(cardsDatabase);
             System.out.println("\n1. Create an account\n" +
                     "2. Log into account\n" +
                     "0. Exit");
@@ -49,7 +47,9 @@ public class Main {
                     Card card = sqlDatabaseHandler.login(number, pin);
                     if (card != null) {
                         InAccount inAccount = new InAccount(scanner, card, sqlDatabaseHandler);
-                        inAccount.accountHandler();
+                        if (inAccount.accountHandler()) {
+                            break outloop;
+                        };
                     }
                     break;
                 default:

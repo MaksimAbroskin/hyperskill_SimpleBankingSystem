@@ -10,7 +10,6 @@ public class Card {
     String pin;
     Integer balance;
 
-    // TODO algorithm of calculation id
     public Card() {
         cnt++;
         this.id = cnt;
