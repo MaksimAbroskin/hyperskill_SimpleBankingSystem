@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         String fileName = CmdLineArgsParse.parseArgs(args);
         String fileNameTest = "db.s3db";
-        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileNameTest);
+        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileName);
         sqlDatabaseHandler.createDatabase();
         outloop:
         while (true) {
@@ -48,10 +48,37 @@ public class Main {
                     String number = scanner.next();
                     System.out.println("Enter your PIN:");
                     String pin = scanner.next();
-                    sqlDatabaseHandler.login(number, pin);
+                    Card card = sqlDatabaseHandler.login(number, pin);
                     // TODO while if logined
-//                    AccountHandler accountHandler = new AccountHandler(cardsDatabase, scanner);
-//                    accountHandler.loginAccount();
+                    if (card != null) {
+                        inAccountLoop:
+                        while (true) {
+                            System.out.println("\n1. Balance\n" +
+                                    "2. Log out\n" +
+                                    "0. Exit");
+
+                            int commandInAccount;
+                            try {
+                                commandInAccount = scanner.nextInt();
+                            } catch (Exception e) {
+                                System.out.println("Incorrect command");
+                                continue;
+                            }
+
+                            switch (commandInAccount) {
+                                case 0:
+                                    break outloop;
+                                case 1:
+                                    System.out.println("Balance: " + card.getBalance());
+                                    break;
+                                case 2:
+                                    System.out.println("You have successfully logged out!");
+                                    break inAccountLoop;
+                            }
+
+                        }
+                    }
+                    break;
             }
         }
     }

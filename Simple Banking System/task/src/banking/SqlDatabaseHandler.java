@@ -53,8 +53,7 @@ public class SqlDatabaseHandler {
         }
     }
 
-    // TODO return Card
-    public void login(String number, String pin) {
+    public Card login(String number, String pin) {
         try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = con.prepareStatement(QUERY_LOGIN)) {
                 preparedStatement.setString(1, number);
@@ -62,7 +61,10 @@ public class SqlDatabaseHandler {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     System.out.println("You have successfully logged in!");
-
+                    return new Card(resultSet.getInt("id"),
+                            resultSet.getString("number"),
+                            resultSet.getString("pin"),
+                            resultSet.getInt("balance"));
                 } else {
                     System.out.println("Wrong card number or PIN!");
                 }
@@ -72,7 +74,7 @@ public class SqlDatabaseHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     public void getCard() {

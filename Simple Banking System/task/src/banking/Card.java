@@ -20,6 +20,12 @@ public class Card {
     }
 
     //TODO constructor with all parameters
+    public Card(int id, String number, String pin, Integer balance) {
+        this.id = id;
+        this.number = number;
+        this.pin = pin;
+        this.balance = balance;
+    }
 
     public void setNumber() {
         Random random = new Random();
