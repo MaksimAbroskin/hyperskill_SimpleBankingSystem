@@ -47,37 +47,13 @@ public class Main {
                     System.out.println("Enter your PIN:");
                     String pin = scanner.next();
                     Card card = sqlDatabaseHandler.login(number, pin);
-                    // TODO while if logined
                     if (card != null) {
                         InAccount inAccount = new InAccount(scanner, card, sqlDatabaseHandler);
                         inAccount.accountHandler();
-//                        inAccountLoop:
-//                        while (true) {
-//                            System.out.println("\n1. Balance\n" +
-//                                    "2. Log out\n" +
-//                                    "0. Exit");
-//
-//                            int commandInAccount;
-//                            try {
-//                                commandInAccount = scanner.nextInt();
-//                            } catch (Exception e) {
-//                                System.out.println("Incorrect command");
-//                                continue;
-//                            }
-//
-//                            switch (commandInAccount) {
-//                                case 0:
-//                                    break outloop;
-//                                case 1:
-//                                    System.out.println("Balance: " + card.getBalance());
-//                                    break;
-//                                case 2:
-//                                    System.out.println("You have successfully logged out!");
-//                                    break inAccountLoop;
-//                            }
-//
-//                        }
                     }
+                    break;
+                default:
+                    System.out.println("Unknown command");
                     break;
             }
         }

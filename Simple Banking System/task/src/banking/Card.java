@@ -10,8 +10,8 @@ public class Card {
     String pin;
     Integer balance;
 
+    // TODO algorithm of calculation id
     public Card() {
-        // TODO algorithm of calculation id
         cnt++;
         this.id = cnt;
         setNumber();
@@ -75,6 +75,13 @@ public class Card {
             sum += digits[i];
         }
         return (sum % 10 != 0) ? 10 - sum % 10 : 0;
+    }
+
+    public static boolean isCorrectCardNumber(String number) {
+        if (!number.matches("\\d{16}")) {
+            return false;
+        }
+        return Character.getNumericValue(number.charAt(15)) == generateChecksum(number.substring(0, 15));
     }
 
     @Override
