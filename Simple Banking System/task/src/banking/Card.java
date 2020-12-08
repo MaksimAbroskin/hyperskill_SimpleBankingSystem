@@ -4,15 +4,25 @@ import java.util.Random;
 
 public class Card {
     final String BIN = "400000";
+    static int cnt;
+    int id;
     String number;
     String pin;
     Integer balance;
-//    String bin; //Bank Identification Number
 
     public Card() {
+        cnt++;
+        this.id = cnt;
         setNumber();
         setPin();
         setBalance(0);
+    }
+
+    public Card(int id, String number, String pin, Integer balance) {
+        this.id = id;
+        this.number = number;
+        this.pin = pin;
+        this.balance = balance;
     }
 
     public void setNumber() {
@@ -30,6 +40,10 @@ public class Card {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNumber() {
@@ -62,9 +76,17 @@ public class Card {
         return (sum % 10 != 0) ? 10 - sum % 10 : 0;
     }
 
+    public static boolean isCorrectCardNumber(String number) {
+        if (!number.matches("\\d{16}")) {
+            return false;
+        }
+        return Character.getNumericValue(number.charAt(15)) == generateChecksum(number.substring(0, 15));
+    }
+
     @Override
     public String toString() {
         return "Card{" +
+                "id='" + id + '\'' +
                 "number='" + number + '\'' +
                 ", pin=" + pin +
                 ", balance=" + balance +
