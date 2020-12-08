@@ -4,12 +4,11 @@ import java.util.*;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    static ArrayList<Card> cardsDatabase = new ArrayList<>();
 
     public static void main(String[] args) {
         String fileName = CmdLineArgsParse.parseArgs(args);
-        String fileNameTest = "db.s3db";
-        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileName);
+        String fileNameTest = "db1.s3db";
+        SqlDatabaseHandler sqlDatabaseHandler = new SqlDatabaseHandler(fileNameTest);
         sqlDatabaseHandler.createDatabase();
         outloop:
         while (true) {
@@ -38,7 +37,6 @@ public class Main {
                     Card newCard = AccountHandler.createAccount();
                     if (newCard != null) {
                         sqlDatabaseHandler.addNewCard(newCard);
-//                        cardsDatabase.add(newCard);
                     } else {
                         System.out.println("Couldn't create new account");
                     }
@@ -51,32 +49,34 @@ public class Main {
                     Card card = sqlDatabaseHandler.login(number, pin);
                     // TODO while if logined
                     if (card != null) {
-                        inAccountLoop:
-                        while (true) {
-                            System.out.println("\n1. Balance\n" +
-                                    "2. Log out\n" +
-                                    "0. Exit");
-
-                            int commandInAccount;
-                            try {
-                                commandInAccount = scanner.nextInt();
-                            } catch (Exception e) {
-                                System.out.println("Incorrect command");
-                                continue;
-                            }
-
-                            switch (commandInAccount) {
-                                case 0:
-                                    break outloop;
-                                case 1:
-                                    System.out.println("Balance: " + card.getBalance());
-                                    break;
-                                case 2:
-                                    System.out.println("You have successfully logged out!");
-                                    break inAccountLoop;
-                            }
-
-                        }
+                        InAccount inAccount = new InAccount(scanner, card, sqlDatabaseHandler);
+                        inAccount.accountHandler();
+//                        inAccountLoop:
+//                        while (true) {
+//                            System.out.println("\n1. Balance\n" +
+//                                    "2. Log out\n" +
+//                                    "0. Exit");
+//
+//                            int commandInAccount;
+//                            try {
+//                                commandInAccount = scanner.nextInt();
+//                            } catch (Exception e) {
+//                                System.out.println("Incorrect command");
+//                                continue;
+//                            }
+//
+//                            switch (commandInAccount) {
+//                                case 0:
+//                                    break outloop;
+//                                case 1:
+//                                    System.out.println("Balance: " + card.getBalance());
+//                                    break;
+//                                case 2:
+//                                    System.out.println("You have successfully logged out!");
+//                                    break inAccountLoop;
+//                            }
+//
+//                        }
                     }
                     break;
             }

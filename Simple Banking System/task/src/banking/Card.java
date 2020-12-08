@@ -19,7 +19,6 @@ public class Card {
         setBalance(0);
     }
 
-    //TODO constructor with all parameters
     public Card(int id, String number, String pin, Integer balance) {
         this.id = id;
         this.number = number;
