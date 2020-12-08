@@ -44,10 +44,10 @@ public class InAccount {
                 case EXIT:
                     return;
                 case GET_BALANCE:
-                    getBalance();
+                    System.out.println("Balance: " + getBalance());
                     break;
                 case ADD_INCOME:
-
+                    addIncome();
                     break;
                 case DO_TRANSFER:
 
@@ -63,14 +63,45 @@ public class InAccount {
         }
     }
 
-    void getBalance() {
+    int getBalance() {
         String QUERY = "SELECT balance FROM card WHERE (number = ?) AND (pin = ?)";
 
         try (Connection con = sqlDatabaseHandler.dataSource.getConnection()) {
             try (PreparedStatement statement = con.prepareStatement(QUERY)) {
                 statement.setString(1, thisCard.getNumber());
                 statement.setString(2, thisCard.getPin());
-                System.out.println("Balance: " + statement.executeQuery().getInt("balance"));
+                return statement.executeQuery().getInt("balance");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    void addIncome() {
+        String QUERY = "UPDATE card SET balance = ? WHERE (number = ?) AND (pin = ?)";
+
+        int incomeAmount;
+        try {
+            System.out.println("Enter income:");
+            incomeAmount = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Incorrect amount! Enter integer number");
+            return;
+        }
+
+        try (Connection con = sqlDatabaseHandler.dataSource.getConnection()) {
+            try (PreparedStatement statement = con.prepareStatement(QUERY)) {
+                statement.setInt(1, getBalance() + incomeAmount);
+                statement.setString(2, thisCard.getNumber());
+                statement.setString(3, thisCard.getPin());
+                System.out.println(statement.toString());
+                System.out.println(statement.getMetaData());
+                System.out.println(statement.getParameterMetaData());
+                statement.executeUpdate();
+                System.out.println("Income was added!");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
